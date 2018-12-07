@@ -1,5 +1,4 @@
 var list = document.getElementsByTagName("pre")[0].innerHTML.split("\n")
-var output;
 
 list.splice(-1);
 
@@ -43,19 +42,15 @@ list.splice(-1);
 		// Sort distances list
 		let sortedDistances = distances.slice().sort((a, b) => { return a - b });
 
-		// If there is a tie for nearest neighbour, return -1
-		if ( sortedDistances[0] === sortedDistances[1] ) {
-			return -1;
-		} else {
-			// Otherwise, return the index of the nearest neighbour
-			return distances.indexOf(sortedDistances[0]);
-		}
+		// If there is a tie for nearest neighbour, return -1,
+		// otherwise return the index of the nearest neighbour.
+		return ( sortedDistances[0] === sortedDistances[1] ) ? -1 : distances.indexOf(sortedDistances[0]);
 
 	};
 
 
 	// Map inputs list into 2D numeric array
-	const inputs = list.map(x => x.split(", ").map(y => Number(y)));
+	const inputs = list.map(x => x.split(", ").map(y => Number(y))),
 	const bounds = getBounds( inputs );
 	const margin = {
 		h: Math.abs(bounds.xr - bounds.xl) * 2,
@@ -93,8 +88,6 @@ list.splice(-1);
 		}
 
 	}
-
-	output = { grid: grid, counts: counts.slice() };
 
 	// Exclude values that touch the edges because they're probably infinite.
 	for ( let i = 0; i < grid.length; i++ ) {
