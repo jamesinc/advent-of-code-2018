@@ -1,12 +1,14 @@
 #!/usr/bin/env python 
 
+import collections
+
 players = 438
-last = 71626
+last = 7162600
 
 # Initialise scores
 scores = [0] * players
 # Init the marble ring
-ring = [0]
+ring = collections.deque([0])
 currentMarble = 0
 
 for turn in range(1, last + 1):
@@ -14,15 +16,11 @@ for turn in range(1, last + 1):
 
 	# Marble is a multiple of 23
 	if not turn % 23:
-		currentMarble = (currentMarble - 7 + len(ring)-1) % (len(ring)) + 1
-		scores[player] += turn + ring.pop(currentMarble)
+		ring.rotate(-7)
+		scores[player] += turn + ring.pop()
 	else:
 		insertIndex = (currentMarble + 2 - 1) % (len(ring)) + 1
-		# if insertIndex > 0:
-		ring.insert(insertIndex, turn)
-		currentMarble = insertIndex
-		# else:
-		# 	ring.append(turn)
-		# 	currentMarble = len(ring) - 1
+		ring.rotate(2)
+		ring.append(turn)
 
 print("Winning elf scored", max(scores))
